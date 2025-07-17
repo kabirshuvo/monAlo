@@ -1,8 +1,9 @@
 // app/layout.tsx
+
 import "../styles/globals.css";
 import { Inter } from "next/font/google";
 import ReduxProvider from "@/components/providers/ReduxProvider"; // 👈 your wrapper
-
+import Header from "@/components/Header"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,9 +15,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <ReduxProvider>
+          <Header />
           {children}
         </ReduxProvider>
       </body>
     </html>
   );
 }
+
