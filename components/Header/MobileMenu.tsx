@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import { useSession, signOut } from 'next-auth/react';
 import { RootState } from '@/lib/redux/store';
 
 export default function MobileMenu() {
   const cart = useSelector((state: RootState) => state.cart?.cart ?? []);
   const cartItemCount = cart.length;
+  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col gap-4 mt-6">
@@ -22,9 +24,18 @@ export default function MobileMenu() {
       <Link href="/contact" className="text-gray-700 hover:text-amber-600 text-lg">
         Contact
       </Link>
-      <Link href="/login" className="text-gray-700 hover:text-amber-600 text-lg">
-        Login
-      </Link>
+      {session ? (
+        <button
+          onClick={() => signOut({ callbackUrl: '/' })}
+          className="text-gray-700 hover:text-amber-600 text-lg text-left"
+        >
+          Logout
+        </button>
+      ) : (
+        <Link href="/login" className="text-gray-700 hover:text-amber-600 text-lg">
+          Login
+        </Link>
+      )}
     </div>
   );
 }
