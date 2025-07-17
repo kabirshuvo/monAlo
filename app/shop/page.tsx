@@ -1,64 +1,92 @@
-// app/shop/page.tsx
-"use client"
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+'use client';
 
-const mockCandles = [
-  {
-    id: "1",
-    title: "Lavender Bliss",
-    price: 450,
-    category: "Aromatherapy",
-    image: "/candles/lavender.jpg",
-  },
-  {
-    id: "2",
-    title: "Citrus Sunrise",
-    price: 380,
-    category: "Citrus",
-    image: "/candles/citrus.jpg",
-  },
-  {
-    id: "3",
-    title: "Vanilla Woods",
-    price: 520,
-    category: "Woodsy",
-    image: "/candles/vanilla.jpg",
-  },
-];
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '@/lib/redux/features/productSlice';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import Link from 'next/link';
+import { AppDispatch, RootState } from '@/lib/redux/store';
 
-export default function ShopPage() {
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  category: 'scented' | 'unscented';
+}
+
+export default function Shop() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { products, status, error } = useSelector((state: RootState) => state.products);
+  const [category, setCategory] = useState<string>('all');
+  const [sort, setSort] = useState<string>('default');
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
+
+  const filteredProducts = products
+    .filter((product: Product) => category === 'all' || product.category === category)
+    .sort((a: Product, b: Product) => {
+      if (sort === 'price-asc') return a.price - b.price;
+      if (sort === 'price-desc') return b.price - a.price;
+      return 0;
+    });
+
   return (
-    <main className="px-6 md:px-12 py-10 space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">🕯️ MonAlo Candle Shop</h1>
-        <p className="text-gray-600 mt-2 max-w-xl mx-auto">Explore hand-poured artisan candles crafted to light up your soul.</p>
+    <div className="container mx-auto py-12 min-h-screen bg-gray-50">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Shop Our Candles</h2>
+      <div className="flex flex-col sm:flex-row justify-between mb-8 gap-4">
+        <Select onValueChange={setCategory} defaultValue="all">
+          <SelectTrigger className="w-full sm:w-48">
+            <SelectValue placeholder="Filter by Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="scented">Scented</SelectItem>
+            <SelectItem value="unscented">Unscented</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select onValueChange={setSort} defaultValue="default">
+          <SelectTrigger className="w-full sm:w-48">
+            <SelectValue placeholder="Sort By" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="default">Default</SelectItem>
+            <SelectItem value="price-asc">Price: Low to High</SelectItem>
+            <SelectItem value="price-desc">Price: High to Low</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-
-      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {mockCandles.map((candle) => (
-          <Card key={candle.id} className="hover:shadow-lg transition">
-            <div className="relative h-48 w-full">
-              <Image
-                src={candle.image}
-                alt={candle.title}
-                fill
-                className="object-cover rounded-t-lg"
+      {status === 'loading' && <p>Loading products...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredProducts.map((product: Product) => (
+          <Card key={product._id} className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-48 object-cover rounded-t-md"
               />
-            </div>
-            <CardContent className="py-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold">{candle.title}</h2>
-                <Badge variant="secondary">{candle.category}</Badge>
-              </div>
-              <p className="text-amber-600 font-bold">৳ {candle.price}</p>
-              <Button className="w-full">Add to Cart</Button>
+            </CardHeader>
+            <CardContent>
+              <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
+              <p className="text-gray-600">${product.price}</p>
+              <Link href={`/shop/${product._id}`}>
+                <Button variant="outline" className="mt-4 w-full">
+                  View Details
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         ))}
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

@@ -1,23 +1,26 @@
-"use client";
 
-import { ShoppingCart } from "lucide-react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/redux/store";
-import Link from "next/link";
+'use client';
 
-const CartButton = () => {
-  const itemCount = useSelector((state: RootState) => state.cart.items.length);
+import { useSelector } from 'react-redux';
+import { ShoppingCart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { RootState } from '@/lib/redux/store';
+
+export default function CartButton() {
+  const cart = useSelector((state: RootState) => state.cart?.cart ?? []);
+  const cartItemCount = cart.length;
 
   return (
-    <Link href="/cart" className="relative">
-      <ShoppingCart className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
-      {itemCount > 0 && (
-        <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-          {itemCount}
-        </span>
-      )}
-    </Link>
+    <Button variant="ghost" asChild className="relative">
+      <Link href="/cart">
+        <ShoppingCart className="h-6 w-6" />
+        {cartItemCount > 0 && (
+          <span className="absolute -top-2 -right-2 bg-amber-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+            {cartItemCount}
+          </span>
+        )}
+      </Link>
+    </Button>
   );
-};
-
-export default CartButton;
+}
