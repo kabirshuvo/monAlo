@@ -6,7 +6,20 @@ const productSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   image: { type: String, required: true },
   description: { type: String },
-  category: { type: String, enum: ['scented', 'unscented'], required: true },
+  category: {
+    type: String,
+    enum: [
+      'scented',
+      'unscented',
+      'aromatic',
+      'decorative',
+      'therapeutic',
+      'birthday',
+      'religious',
+      'candles',
+    ],
+    required: true,
+  },
 });
 
 export default mongoose.models.Product || mongoose.model('Product', productSchema);

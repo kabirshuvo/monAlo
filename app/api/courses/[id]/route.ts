@@ -1,5 +1,7 @@
+// app/api/courses/[id]/routeModule.ts
+
 import { connectDB } from "@/lib/db";
-import Course from "@/models/Course";
+import Course from "@/models/courseModel";
 import { NextResponse } from "next/server";
 
 // GET course by ID
