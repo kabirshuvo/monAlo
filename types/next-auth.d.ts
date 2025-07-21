@@ -22,15 +22,3 @@ declare module 'next-auth/jwt' {
     role: string;
   }
 }
-export interface Lesson {
-  id: string;
-  title: string;
-  content: string;
-}
-
-export interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  lessons: Lesson[];
-}
