@@ -1,4 +1,5 @@
 // models/courseModel.ts
+
 import mongoose from 'mongoose';
 
 const lessonSchema = new mongoose.Schema({

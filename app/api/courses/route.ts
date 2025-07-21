@@ -1,18 +1,29 @@
-import { connectDB } from "@/lib/db";
-import Course from "@/models/Course";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import Course from '@/models/courseModel';
+import { connectDB } from '@/lib/db';
 
-// GET all courses
-export async function GET() {
-  await connectDB();
-  const courses = await Course.find();
-  return NextResponse.json(courses);
-}
+export async function POST(req: NextRequest) {
+  try {
+    await connectDB();
 
-// POST a new course
-export async function POST(req: Request) {
-  await connectDB();
-  const body = await req.json();
-  const course = await Course.create(body);
-  return NextResponse.json(course, { status: 201 });
+    const body = await req.json();
+    const { title, description, lessons } = body;
+
+    if (!title || !description || !Array.isArray(lessons)) {
+      return new NextResponse('Invalid course data', { status: 400 });
+    }
+
+    const course = new Course({
+      title,
+      description,
+      lessons,
+    });
+
+    const saved = await course.save();
+
+    return NextResponse.json(saved, { status: 201 });
+  } catch (error) {
+    console.error('[COURSE POST ERROR]', error);
+    return new NextResponse('Failed to add course', { status: 500 });
+  }
 }
