@@ -1,4 +1,3 @@
-// app/api/courses/[id]/route.ts
 import { NextResponse } from 'next/server';
 import Course from '@/models/courseModel';
 import { connectDB } from '@/lib/db';
@@ -12,6 +11,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     }
     return NextResponse.json(course);
   } catch (error) {
+    console.error('[GET COURSE ERROR]', error); 
     return new NextResponse('Failed to fetch course', { status: 500 });
   }
 }

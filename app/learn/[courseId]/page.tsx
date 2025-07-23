@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Course } from "@/types"; //Cannot find module '@/types' or its corresponding type declarations.ts(2307)
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 
 interface CoursePageProps {
   params: { courseId: string };

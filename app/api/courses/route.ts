@@ -9,6 +9,7 @@ export async function GET() {
     const courses = await Course.find();
     return NextResponse.json(courses);
   } catch (error) {
+    console.error('[GET COURSE ERROR]', error); 
     return new NextResponse('Failed to fetch courses', { status: 500 });
   }
 }

@@ -9,14 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
 import { AppDispatch, RootState } from '@/lib/redux/store';
 
-interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-  category: 'scented' | 'unscented';
-}
+
 
 export default function ProductDetail() {
   const dispatch = useDispatch<AppDispatch>();
@@ -62,3 +55,6 @@ export default function ProductDetail() {
     </div>
   );
 }
+
+//./app/shop/[id]/page.tsx
+// 12:11  Error: 'Product' is defined but never used.  @typescript-eslint/no-unused-vars

@@ -13,7 +13,7 @@ interface Product {
   price: number;
   image: string;
   description: string;
-  category: 'scented' | 'unscented';
+  category: 'scented' | 'unscented' | 'candles' | string;
 }
 
 export default function Cart() {
@@ -31,11 +31,12 @@ export default function Cart() {
           <div className="space-y-4">
             {cart.map((item: Product) => (
               <Card key={item._id}>
+                <CardHeader>
+                  <CardTitle className="text-xl font-semibold">{item.name}</CardTitle>
+                  <p className="text-gray-500">{item.description}</p>
+                </CardHeader>
                 <CardContent className="flex justify-between items-center p-4">
-                  <div>
-                    <CardTitle className="text-lg">{item.name}</CardTitle>
-                    <p className="text-gray-600">${item.price}</p>
-                  </div>
+                  <p className="text-lg font-medium text-gray-800">${item.price}</p>
                   <Button
                     variant="destructive"
                     onClick={() => dispatch(removeFromCart(item._id))}
