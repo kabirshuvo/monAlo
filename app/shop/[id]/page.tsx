@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
 import { AppDispatch, RootState } from '@/lib/redux/store';
+// import { Import } from 'lucide-react';
+import Image from 'next/image';
 
 
 
@@ -37,11 +39,8 @@ export default function ProductDetail() {
     <div className="container mx-auto py-12 min-h-screen bg-gray-50">
       <Card>
         <CardHeader>
-          <img
-            src={selectedProduct.image}
-            alt={selectedProduct.name}
-            className="w-full h-96 object-cover rounded-t-md"
-          />
+          <Image src={selectedProduct.image}
+            alt={selectedProduct.name} className="w-full h-96 object-cover rounded-t-md" width={500} height={300} />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-2xl font-bold">{selectedProduct.name}</CardTitle>

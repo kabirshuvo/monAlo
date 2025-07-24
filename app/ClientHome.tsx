@@ -1,3 +1,4 @@
+//app/ClientHome.tsx 
 'use client';
 
 import { useEffect } from 'react';
@@ -5,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { fetchProducts } from '@/lib/redux/features/productSlice';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { AppDispatch, RootState } from '@/lib/redux/store';
@@ -63,11 +65,7 @@ export default function ClientHome() {
             {featuredProducts.map((product: Product) => (
               <Card key={product._id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-48 object-cover rounded-t-md"
-                  />
+                 <Image src="/images/pic.jpg" alt="Example" width={500} height={300} />
                 </CardHeader>
                 <CardContent>
                   <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>

@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import User from '@/models/userModel';
@@ -19,6 +18,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
   } catch (error) {
+    console.error('Registration error:', error);
     return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
   }
 }

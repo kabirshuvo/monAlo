@@ -6,6 +6,7 @@ import { fetchProducts } from '@/lib/redux/features/productSlice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import Image from 'next/image';
 import Link from 'next/link';
 import { AppDispatch, RootState } from '@/lib/redux/store';
 
@@ -69,11 +70,9 @@ export default function Shop() {
         {filteredProducts.map((product: Product) => (
           <Card key={product._id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-48 object-cover rounded-t-md"
-              />
+            
+              <Image src={product.image}
+                alt={product.name} width={500} height={300} className="w-full h-48 object-cover rounded-t-md"/>
             </CardHeader>
             <CardContent>
               <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
