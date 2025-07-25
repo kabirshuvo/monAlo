@@ -1,6 +1,5 @@
-// app/api/courses/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import Course from '@/models/courseModel';
+import Product from '@/models/productModel';
 import { connectDB } from '@/lib/db';
 
 interface Params {
@@ -12,15 +11,15 @@ interface Params {
 export async function GET(_req: NextRequest, { params }: Params) {
   try {
     await connectDB();
-    const course = await Course.findById(params.id);
+    const product = await Product.findById(params.id);
 
-    if (!course) {
-      return new NextResponse('Course not found', { status: 404 });
+    if (!product) {
+      return new NextResponse('Product not found', { status: 404 });
     }
 
-    return NextResponse.json(course);
+    return NextResponse.json(product);
   } catch (error) {
-    console.error('[GET COURSE ERROR]', error);
-    return new NextResponse('Failed to fetch course', { status: 500 });
+    console.error('[GET PRODUCT ERROR]', error);
+    return new NextResponse('Failed to fetch product', { status: 500 });
   }
 }
